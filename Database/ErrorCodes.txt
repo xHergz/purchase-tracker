@@ -1,0 +1,8 @@
+// General Error Codes
+0000 - Success
+0001 - General Error
+
+// Stored Procedure Errors
+// RegenerateUserApiKey
+1001 - User Id does not exist
+1002 - Api Key already exists
