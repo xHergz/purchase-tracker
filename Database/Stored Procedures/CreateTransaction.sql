@@ -4,6 +4,7 @@ CREATE PROCEDURE CreateTransaction
 	IN _userId INT,
     IN _subcategoryId INT,
     IN _location VARCHAR(100),
+    IN
     IN _amount DOUBLE(8, 2),
     IN _transactionDate DATETIME,
     IN _description VARCHAR(250),
