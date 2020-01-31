@@ -1,2 +1,15 @@
 INSERT INTO Category (Description) VALUES
-('');
+('Work'),
+('Appointments'),
+('Baby'),
+('Car'),
+('Extra'),
+('Unknown'),
+('Pets'),
+('House'),
+('Government'),
+('Living'),
+('Business'),
+('Special Occasion'),
+('Personal'),
+('Loans');
