@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'/>
+    </head>
+    <body>
+        <h1>Enter Transactions</h1>
+        <form id='transactionForm' onsubmit='return createTransaction()' method='post'>
+            <label for='users'>Choose a User:</label>
+            <select id='users' name='userId' form='transactionForm'>
+                <option value='1'>Justin</option>
+                <option value='2'>Karistan</option>
+            </select>
+            <br>
+            <label for='categories'>Choose a Category:</label>
+            <select id='categories' name='categoryId' onchange='filterSubcategories()'>
+                <option value='' selected disabled hidden>Select a Category</option>
+                <option value='1'>Work</option>
+                <option value='2'>Appointments</option>
+                <option value='3'>Baby</option>
+                <option value='4'>Car</option>
+                <option value='5'>Extra</option>
+                <option value='6'>Unknown</option>
+                <option value='7'>Pets</option>
+                <option value='8'>House</option>
+                <option value='9'>Government</option>
+                <option value='10'>Living</option>
+                <option value='11'>Business</option>
+                <option value='12'>Special Occasion</option>
+                <option value='13'>Personal</option>
+                <option value='14'>Loans</option>
+            </select>
+            <br>
+            <label for='subcategories'>Choose a Subcategory:</label>
+            <select id='subcategories' name='subcategoryId'>
+            </select>
+            <br>
+            <label for='location'>Location:</label>
+            <input id='location' type='text' name='location' value=''>
+            <br>
+            <label for='debitAmount'>Debit Amount:</label>
+            <input id='debitAmount' type='text' name='debitAmount' value=''>
+            <br>
+            <label for='creditAmount'>Credit Amount:</label>
+            <input id='creditAmount' type='text' name='creditAmount' value=''>
+            <br>
+            <label for='transactionDate'>Transaction Date:</label>
+            <input id='transactionDate' type='date' name='transactionDate' value=''>
+            <br>
+            <label for='description'>Description:</label>
+            <input id='description' type='text' name='description' value=''>
+            <br>
+            <input type='submit' value='Submit'>
+        </form>
+
+        <form>
+            <label for='description'>Description:</label>
+            <input id='description' type='text' name='description' value=''>
+            <br>
+            <input type='submit' value='Submit'>
+        </form>
+
+        <script>
+            const subcategories = [
+                { subcategoryId: 1, categoryId:	1, text: 'Alert Labs'},
+                { subcategoryId: 2, categoryId:	2, text: 'Doctor'},
+                { subcategoryId: 3, categoryId:	2, text: 'Dentist'},
+                { subcategoryId: 4, categoryId:	2, text: 'Eye Doctor'},
+                { subcategoryId: 5, categoryId:	3, text: 'Baby Food'},
+                { subcategoryId: 6, categoryId:	3, text: 'Baby Supplies'},
+                { subcategoryId: 7, categoryId:	4, text: 'Car Gas'},
+                { subcategoryId: 8, categoryId:	4, text: 'Car Insurance'},
+                { subcategoryId: 9, categoryId:	4, text: 'Car Maintenance'},
+                { subcategoryId: 10, categoryId: 5, text: 'Eat Out'},
+                { subcategoryId: 11, categoryId: 5, text: 'Entertainment'},
+                { subcategoryId: 12, categoryId: 5, text: 'Take Out'},
+                { subcategoryId: 13, categoryId: 6, text: 'Unknown'},
+                { subcategoryId: 14, categoryId: 6, text: 'Too Long Ago'},
+                { subcategoryId: 15, categoryId: 7, text: 'Felix'},
+                { subcategoryId: 16, categoryId: 7, text: 'Vet'},
+                { subcategoryId: 17, categoryId: 8, text: 'Gas Bill'},
+                { subcategoryId: 18, categoryId: 8, text: 'Hydro Bill'},
+                { subcategoryId: 19, categoryId: 8, text: 'Water Bill'},
+                { subcategoryId: 20, categoryId: 8, text: 'Water Heater Rental'},
+                { subcategoryId: 21, categoryId: 8, text: 'Water Softner Rental'},
+                { subcategoryId: 22, categoryId: 8, text: 'Mortgage Payment'},
+                { subcategoryId: 23, categoryId: 8, text: 'Home Insurance'},
+                { subcategoryId: 24, categoryId: 8, text: 'Furnature'},
+                { subcategoryId: 25, categoryId: 8, text: 'Home Improvement'},
+                { subcategoryId: 26, categoryId: 8, text: 'House Supplies'},
+                { subcategoryId: 27, categoryId: 9, text: 'Taxes'},
+                { subcategoryId: 28, categoryId: 9, text: 'Maternity Leave'},
+                { subcategoryId: 29, categoryId: 9, text: 'Baby Bonus'},
+                { subcategoryId: 30, categoryId: 10, text: 'Groceries'},
+                { subcategoryId: 31, categoryId: 10, text: 'Internet Bill'},
+                { subcategoryId: 32, categoryId: 10, text: 'Media Bill'},
+                { subcategoryId: 33, categoryId: 10, text: 'Cell Phone Bill'},
+                { subcategoryId: 34, categoryId: 11, text: 'HergBot'},
+                { subcategoryId: 35, categoryId: 11, text: 'KaristanK'},
+                { subcategoryId: 36, categoryId: 12, text: 'Birthday'},
+                { subcategoryId: 37, categoryId: 12, text: 'Valentines Day'},
+                { subcategoryId: 38, categoryId: 12, text: 'Easter'},
+                { subcategoryId: 39, categoryId: 12, text: 'Victoria Day'},
+                { subcategoryId: 40, categoryId: 12, text: 'Canada Day'},
+                { subcategoryId: 41, categoryId: 12, text: 'Civic Holiday'},
+                { subcategoryId: 42, categoryId: 12, text: 'Labour Day'},
+                { subcategoryId: 43, categoryId: 12, text: 'Thanksgiving'},
+                { subcategoryId: 44, categoryId: 12, text: 'Anniversary'},
+                { subcategoryId: 45, categoryId: 12, text: 'Halloween'},
+                { subcategoryId: 46, categoryId: 12, text: 'Christmas'},
+                { subcategoryId: 47, categoryId: 13, text: 'Hobby'},
+                { subcategoryId: 48, categoryId: 14, text: 'Student Loans'},
+            ];
+
+        document.getElementById('transactionDate').valueAsDate = new Date();
+
+        function filterSubcategories() {
+            const subcategorySelect = document.getElementById('subcategories');
+            const selectedCategory = Number(document.getElementById('categories').value);
+            const filteredSubcategories = subcategories.filter(subcategory => subcategory.categoryId === selectedCategory);
+            removeOptions(subcategorySelect);
+            subcategories.filter(subcategory => subcategory.categoryId === selectedCategory)
+                .forEach(subcategory => {
+                    const newOption = document.createElement('option');
+                    newOption.value = subcategory.subcategoryId;
+                    newOption.text = subcategory.text;
+                    subcategorySelect.add(newOption);
+                });
+        }
+
+        function removeOptions(selectbox) {
+            let i;
+            for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+            {
+                selectbox.remove(i);
+            }
+        }
+
+        function createTransaction() {
+            const apiKey = '';
+            const data = new FormData(document.getElementById('transactionForm'));
+            console.log(data);
+            fetch('http://api.household.localhost/transaction', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: data
+            }).then(res => {
+                console.log(res);
+            })
+            console.log('Submit');
+            return false;
+        }
+        </script>
+    </body>
+</html> 
