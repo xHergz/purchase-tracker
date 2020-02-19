@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.title {
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.formInput {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.formInput > label {
+    
+    font-weight: bold;
+}
+
+.form > input, .form > button, .formInput > input, .formInput > select {
+    height: 30px;
+}
+
+.feedbackMessage {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#apiKeyWarning {
+    display: flex;
+    padding: 5px;
+    background-color: pink;
+    border: 1px solid red;
+}
+
+#apiKeyForm {
+    margin-top: 20px;
+}
+
+#submitTransactionError, #saveKeyError {
+    color: red;
+}
+
+#submitTransactionMessage, #saveKeyMessage {
+    color: green;
+}

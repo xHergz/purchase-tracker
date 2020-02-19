@@ -2,64 +2,84 @@
 <html>
     <head>
         <meta charset='utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/styles/EnterTransaction.css">
     </head>
     <body>
-        <h1>Enter Transactions</h1>
-        <form id='transactionForm' onsubmit='return createTransaction()' method='post'>
-            <label for='users'>Choose a User:</label>
-            <select id='users' name='userId' form='transactionForm'>
-                <option value='1'>Justin</option>
-                <option value='2'>Karistan</option>
-            </select>
-            <br>
-            <label for='categories'>Choose a Category:</label>
-            <select id='categories' name='categoryId' onchange='filterSubcategories()'>
-                <option value='' selected disabled hidden>Select a Category</option>
-                <option value='1'>Work</option>
-                <option value='2'>Appointments</option>
-                <option value='3'>Baby</option>
-                <option value='4'>Car</option>
-                <option value='5'>Extra</option>
-                <option value='6'>Unknown</option>
-                <option value='7'>Pets</option>
-                <option value='8'>House</option>
-                <option value='9'>Government</option>
-                <option value='10'>Living</option>
-                <option value='11'>Business</option>
-                <option value='12'>Special Occasion</option>
-                <option value='13'>Personal</option>
-                <option value='14'>Loans</option>
-            </select>
-            <br>
-            <label for='subcategories'>Choose a Subcategory:</label>
-            <select id='subcategories' name='subcategoryId'>
-            </select>
-            <br>
-            <label for='location'>Location:</label>
-            <input id='location' type='text' name='location' value=''>
-            <br>
-            <label for='debitAmount'>Debit Amount:</label>
-            <input id='debitAmount' type='text' name='debitAmount' value=''>
-            <br>
-            <label for='creditAmount'>Credit Amount:</label>
-            <input id='creditAmount' type='text' name='creditAmount' value=''>
-            <br>
-            <label for='transactionDate'>Transaction Date:</label>
-            <input id='transactionDate' type='date' name='transactionDate' value=''>
-            <br>
-            <label for='description'>Description:</label>
-            <input id='description' type='text' name='description' value=''>
-            <br>
-            <input type='submit' value='Submit'>
-        </form>
+        <div class="pageContainer">
+            <h1 class="title">Enter Transactions</h1>
+            <div id="apiKeyWarning" class="hidden">
+                You need to set your API Key below before using this form. Ask Justin for the API Key.
+            </div>
+            <form id='transactionForm' class="form" onsubmit='return createTransaction()' method='post'>
+                <div class="formInput">
+                    <label for='users'>Choose a User*:</label>
+                    <select id='users' name='userId' form='transactionForm'>
+                        <option value='1'>Justin</option>
+                        <option value='2'>Karistan</option>
+                    </select>
+                </div>
+                <div class="formInput">
+                    <label for='categories'>Choose a Category*:</label>
+                    <select id='categories' name='categoryId' onchange='filterSubcategories()'>
+                        <option value='' selected disabled hidden>Select a Category</option>
+                        <option value='1'>Work</option>
+                        <option value='2'>Appointments</option>
+                        <option value='3'>Baby</option>
+                        <option value='4'>Car</option>
+                        <option value='5'>Extra</option>
+                        <option value='6'>Unknown</option>
+                        <option value='7'>Pets</option>
+                        <option value='8'>House</option>
+                        <option value='9'>Government</option>
+                        <option value='10'>Living</option>
+                        <option value='11'>Business</option>
+                        <option value='12'>Special Occasion</option>
+                        <option value='13'>Personal</option>
+                        <option value='14'>Loans</option>
+                    </select>
+                </div>
+                <div class="formInput">
+                    <label for='subcategories'>Choose a Subcategory*:</label>
+                    <select id='subcategories' name='subcategoryId'>
+                    </select>
+                </div>
+                <div class="formInput">
+                    <label for='location'>Location*:</label>
+                    <input id='location' type='text' name='location' value='' maxlength="100">
+                </div>
+                <div class="formInput">
+                    <label for='debitAmount'>Debit Amount (Amount Spent)*:</label>
+                    <input id='debitAmount' type='text' name='debitAmount' value=''>
+                </div>
+                <div class="formInput">
+                    <label for='creditAmount'>Credit Amount (Amount Earned)*:</label>
+                    <input id='creditAmount' type='text' name='creditAmount' value=''>
+                </div>
+                <div class="formInput">
+                    <label for='transactionDate'>Transaction Date*:</label>
+                    <input id='transactionDate' type='date' name='transactionDate' value=''>
+                </div>
+                <div class="formInput">
+                    <label for='description'>Description:</label>
+                    <input id='description' type='text' name='description' value='' maxlength="250">
+                </div>
+                <input type='submit' value='Submit Transaction'>
+                <span id="submitTransactionError" class="feedbackMessage"></span>
+                <span id="submitTransactionMessage" class="feedbackMessage"></span>
+            </form>
 
-        <form>
-            <label for='description'>Description:</label>
-            <input id='description' type='text' name='description' value=''>
-            <br>
-            <input type='submit' value='Submit'>
-        </form>
-
+            <div id='apiKeyForm' class="form">
+                <div class="formInput">
+                    <label for='apiKey'>API Key:</label>
+                    <input id='apiKey' type='text' name='apiKey' value='' autocomplete="off">
+                </div>
+                <button onclick='saveApiKey()'>Save Key</button>
+                <button onclick="clearApiKey()">Clear Key</button>
+                <span id="saveKeyError" class="feedbackMessage"></span>
+                <span id="saveKeyMessage" class="feedbackMessage"></span>
+            </div>
+        </div>
         <script>
             const subcategories = [
                 { subcategoryId: 1, categoryId:	1, text: 'Alert Labs'},
@@ -112,7 +132,12 @@
                 { subcategoryId: 48, categoryId: 14, text: 'Student Loans'},
             ];
 
+        const API_KEY_COOKIE = 'apiKey';
         document.getElementById('transactionDate').valueAsDate = new Date();
+        const apiKey = getCookie(API_KEY_COOKIE);
+        if (!apiKey) {
+            document.getElementById('apiKeyWarning').classList.remove('hidden');
+        }
 
         function filterSubcategories() {
             const subcategorySelect = document.getElementById('subcategories');
@@ -137,9 +162,8 @@
         }
 
         function createTransaction() {
-            const apiKey = '';
+            const apiKey = getCookie(API_KEY_COOKIE);
             const data = new FormData(document.getElementById('transactionForm'));
-            console.log(data);
             fetch('http://api.household.localhost/transaction', {
                 method: 'POST',
                 headers: {
@@ -147,10 +171,62 @@
                 },
                 body: data
             }).then(res => {
+                if (res.status === 200) {
+                    setTransactionMessage('Transaction Successfully Saved.');
+                } else {
+                    setTransactionError('Error Saving Transaction.');
+                }
                 console.log(res);
-            })
-            console.log('Submit');
+            }).catch(err => {
+                setTransactionError(err);
+                console.error(err);
+            });
             return false;
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKey').value;
+            setCookie(API_KEY_COOKIE, key, 90);
+            document.getElementById('apiKeyWarning').classList.add('hidden');
+            document.getElementById('apiKey').value = '';
+            setApiKeyMessage('API Key Saved.');
+        }
+
+        function clearApiKey() {
+            deleteCookie(API_KEY_COOKIE);
+            document.getElementById('apiKeyWarning').classList.remove('hidden');
+            setApiKeyMessage('API Key Cleared.');
+        }
+
+        function setTransactionMessage(message) {
+            document.getElementById('submitTransactionError').textContent = '';
+            document.getElementById('submitTransactionMessage').textContent = message;
+        }
+
+        function setTransactionError(error) {
+            document.getElementById('submitTransactionError').textContent = error;
+            document.getElementById('submitTransactionMessage').textContent = '';
+        }
+
+        function setApiKeyMessage(message) {
+            document.getElementById('saveKeyError').textContent = '';
+            document.getElementById('saveKeyMessage').textContent = message;
+        }
+
+        // Source: https://plainjs.com/javascript/utilities/set-cookie-get-cookie-and-delete-cookie-5/
+        function getCookie(name) {
+            const v = document.cookie.match(`(^|;) ?${name}=([^;]*)(;|$)`);
+            return v ? v[2] : null;
+        }
+
+        function setCookie(name, value, days) {
+            const expiry = new Date;
+            expiry.setTime(expiry.getTime() + 24*60*60*1000*days);
+            document.cookie = name + "=" + value + ";path=/;expires=" + expiry.toGMTString();
+        }
+
+        function deleteCookie(name) {
+            setCookie(name, '', -1);
         }
         </script>
     </body>
