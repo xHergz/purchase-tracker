@@ -1,0 +1,20 @@
+{
+    "short_name": "Purchase Tracker",
+    "name": "Purchase Tracker",
+    "icons": [
+      {
+        "src": "/images/icon192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/images/icon512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/household/transactions",
+    "display": "standalone",
+    "orientation": "portrait"
+}
+  

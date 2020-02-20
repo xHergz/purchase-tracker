@@ -15,4 +15,4 @@ RewriteCond %{REQUEST_URI} !^/pages/
 RewriteRule ^([^\/]+)/([^\/]+)$ /pages/ApiEntry.php?endpoint=$1&uid=$2 [L]
 
 # Redirection of pages
-RewriteRule ^purchase-tracker?$ /pages/EnterTransaction.html [NC,L]
+RewriteRule ^household/transactions?$ /pages/EnterTransaction.html [NC,L]
