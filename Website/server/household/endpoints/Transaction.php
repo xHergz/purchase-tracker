@@ -60,7 +60,7 @@
                 $request->GetKey(self::CREDIT_AMOUNT_KEY),
                 $request->GetKey(self::DEBIT_AMOUNT_KEY),
                 $request->GetKey(self::TRANSACTION_DATE_KEY),
-                $request->GetKey(self::DESCRIPTION_KEY),
+                $request->GetKey(self::DESCRIPTION_KEY)
             );
             $request->ValidateInput([$this, self::VALIDATE_TRANSACTION_FOR_CREATE], $transaction);
             $response = $transactionDal->CreateTransaction($transaction->GetUserId(), $transaction->GetSubcategoryId(), $transaction->GetLocation(),

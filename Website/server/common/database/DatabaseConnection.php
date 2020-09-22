@@ -7,7 +7,7 @@
 	require_once __DIR__.'/../utilities/SystemUtilities.php';
 	
 	define("WindowsDbConnectionConfig", "C:\Users\Justin\Documents\Development\Website\HouseHold\DatabaseConnection.config");
-	define("LinuxDbConnectionConfig", "/etc/HergBot/AruaRoseToolSuite/Config/DatabaseConnection.config");
+	define("LinuxDbConnectionConfig", "/etc/hergbot/MyJustinHergott/DatabaseConnection.config");
 	define("ServerTag", "Server");
 	define("UsernameTag", "Username");
 	define("PasswordTag", "Password");

@@ -2,7 +2,7 @@
     require_once __DIR__. "/../utilities/SystemUtilities.php";
 
     define("WindowsLogDirectory", "C:\\xampp\\apache\\logs\\");
-    define("LinuxLogDirectory", "/etc/HerWal/TheMakeupApp/Config/DatabaseConnection.config");
+    define("LinuxLogDirectory", "/var/hergbot/MyJustinHergott/logs/");
     define("LogExtension", ".log");
     define("ApiLogKey", "API_LOG");
     define("ApiFileName", "HouseHoldApi");
